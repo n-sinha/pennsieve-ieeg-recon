@@ -26,6 +26,10 @@ Mount your data directories and run with default file names:
 docker run -v "/path/to/your/data:/data" \
   -v "/path/to/your/output:/output" \
   nishantsinha89/ieeg_recon:latest \
+  --t1 "/data/T1.nii.gz" \
+  --ct "/data/CT.nii.gz" \
+  --elec "/data/electrodes.txt" \
+  --output-dir "/output" \
   --modules "1,2,3,4" \
   --qa-viewer niplot \
   --reg-type gc_noCTthereshold
@@ -58,14 +62,18 @@ docker run -v "/Users/nishant/Dropbox/Sinha/Lab/Research/epi_t3_iEEG/data:/data"
   --reg-type gc_noCTthereshold
 ```
 
-### Minimal Usage (Just Required Arguments)
+### Minimal Usage (Required Arguments Only)
 
-Run with minimal arguments, letting the app use environment variable defaults:
+Run with only the required arguments:
 
 ```bash
 docker run -v "/your/data:/data" \
   -v "/your/output:/output" \
   nishantsinha89/ieeg_recon:latest \
+  --t1 "/data/T1.nii.gz" \
+  --ct "/data/CT.nii.gz" \
+  --elec "/data/electrodes.txt" \
+  --output-dir "/output" \
   --modules "1,2,3,4"
 ```
 
@@ -105,14 +113,18 @@ OUTPUT_DIR/
 
 ## Command Line Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--t1` | T1 MRI file path | `INPUT_DIR/T1.nii.gz` |
-| `--ct` | CT file path | `INPUT_DIR/CT.nii.gz` |
-| `--elec` | Electrode file path | `INPUT_DIR/electrodes.txt` |
-| `--output-dir` | Output directory | `OUTPUT_DIR` |
-| `--modules` | Modules to run | `"1,2,3,4"` |
-| `--qa-viewer` | Quality assurance viewer | `"niplot"` |
-| `--reg-type` | Registration type | `"gc_noCTthereshold"` |
-| `--skip-existing` | Skip if output exists | `False` |
-| `--save-channels` | Save individual channels | `False` |
+| Option | Description | Required | Default |
+|--------|-------------|----------|---------|
+| `--t1` | T1 MRI file path | **Yes** | None |
+| `--ct` | CT file path | **Yes** | None |
+| `--elec` | Electrode file path | **Yes** | None |
+| `--output-dir` | Output directory | **Yes** | None |
+| `--freesurfer-dir` | FreeSurfer directory path | No | None |
+| `--env-path` | Environment file path | No | `.env` |
+| `--modules` | Modules to run | No | `"1,2,3,4"` |
+| `--qa-viewer` | Quality assurance viewer | No | `"niplot"` |
+| `--reg-type` | Registration type | No | `"gc_noCTthereshold"` |
+| `--skip-existing` | Skip if output exists | No | `False` |
+| `--save-channels` | Save individual channels | No | `False` |
+
+**Note:** The `--t1`, `--ct`, `--elec`, and `--output-dir` arguments are **required** and must be specified for the application to run.
