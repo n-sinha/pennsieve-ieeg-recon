@@ -40,9 +40,7 @@ COPY --from=builder /ants-2.6.2/bin/antsRegistration /ants-2.6.2/bin/antsRegistr
 COPY --from=builder /ants-2.6.2/bin/antsApplyTransforms /ants-2.6.2/bin/antsApplyTransforms
 COPY --from=builder /itksnap/greedy /itksnap/greedy
 COPY --from=builder /itksnap/c3d /itksnap/c3d
-COPY --from=builder /opt/conda/bin/fslmaths /opt/conda/bin/fslmaths
-COPY --from=builder /opt/conda/bin/flirt /opt/conda/bin/flirt
-COPY --from=builder /opt/conda/bin/img2imgcoord /opt/conda/bin/img2imgcoord
+COPY --from=builder /opt/conda /opt/conda
 
 ENV PATH="/ants-2.6.2/bin:$PATH"
 ENV PATH="/itksnap/greedy/bin:$PATH"
