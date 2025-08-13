@@ -55,7 +55,7 @@ docker run -v "$(pwd)/demodata/input:/data" \
   --ct "/data/CT.nii.gz" \
   --elec "/data/electrodes.txt" \
   --freesurfer-dir "/data/freesurfer" \
-  --output-dir "/output/recon" \
+  --output-dir "/output" \
   --skip-existing \
   --modules "1,2,3,4" \
   --qa-viewer niplot \
