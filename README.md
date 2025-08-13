@@ -43,23 +43,32 @@ docker run -v "/path/to/your/data:/data" \
 └── electrodes.txt               # Electrode coordinates
 ```
 
-### Advanced Usage (Custom File Names)
+### Advanced Usage (Using Demo Data)
 
-Specify custom file paths while still using environment variables:
+Run with the included demo data for testing and learning:
 
 ```bash
-docker run -v "/Users/nishant/Dropbox/Sinha/Lab/Research/epi_t3_iEEG/data:/data" \
-  -v "/Users/nishant/Dropbox/Sinha/Lab/Research/pennsieve-applications/pennsieve-ieeg-recon/data:/output" \
+docker run -v "$(pwd)/demodata/input:/data" \
+  -v "$(pwd)/demodata/output:/output" \
   nishantsinha89/ieeg_recon:latest \
-  --t1 "/data/BIDS/sub-RID0031/derivatives/freesurfer/mri/T1.nii.gz" \
-  --ct "/data/BIDS/sub-RID0031/ses-clinical01/ct/sub-RID0031_ses-clinical01_acq-3D_space-T01ct_ct.nii.gz" \
-  --elec "/data/BIDS/sub-RID0031/ses-clinical01/ieeg/sub-RID0031_ses-clinical01_space-T01ct_desc-vox_electrodes.txt" \
-  --freesurfer-dir "/data/BIDS/sub-RID0031/derivatives/freesurfer" \
+  --t1 "/data/T1.nii.gz" \
+  --ct "/data/CT.nii.gz" \
+  --elec "/data/electrodes.txt" \
+  --freesurfer-dir "/data/freesurfer" \
   --output-dir "/output/recon" \
   --skip-existing \
   --modules "1,2,3,4" \
   --qa-viewer niplot \
   --reg-type gc_noCTthereshold
+```
+
+**Demo data structure:**
+```
+demodata/input/
+├── T1.nii.gz                    # Demo pre-implant MRI
+├── CT.nii.gz                    # Demo post-implant CT  
+├── electrodes.txt               # Demo electrode coordinates
+└── freesurfer/                  # Demo FreeSurfer directory
 ```
 
 ### Minimal Usage (Required Arguments Only)
