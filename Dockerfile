@@ -75,4 +75,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
-CMD ["uv", "run", "run_ieeg_recon.py", "-h"]
+# Set the entrypoint to run the Python script
+ENTRYPOINT ["uv", "run", "run_ieeg_recon.py"]
+
+# Default command (can be overridden)
+CMD ["--help"]

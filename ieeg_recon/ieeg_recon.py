@@ -59,10 +59,11 @@ class IEEGRecon:
             load_dotenv(env_path)
             
             # Set paths from environment variables
-            self.fslLoc = os.getenv('FSL_DIR')
-            self.itksnap = os.getenv('ITKSNAP_DIR')
+            self.fslLoc = Path('/opt/conda/bin')
+            self.itksnap = Path('/itksnap/greedy/bin')
+            self.c3d = Path('/itksnap/c3d/bin')
             self.freeSurfer =  self.root_dir / 'doc' / 'freesurfer'
-            self.antsLoc = os.getenv('ANTSPATH')
+            self.antsLoc = Path('/ants-2.6.2/bin')
 
             # Allow freesurfer_dir parameter to override environment variable
             self.freeSurferDir = freesurfer_dir if freesurfer_dir is not None else os.getenv('SUBJECTS_DIR')
@@ -205,7 +206,7 @@ class IEEGRecon:
 
         # Convert transform to FSL format
         subprocess.run([
-            f"{self.itksnap}/c3d_affine_tool",
+            f"{self.c3d}/c3d_affine_tool",
             "-ref", self.preImplantMRI,
             "-src", str(output_dir / 'ct_thresholded.nii.gz'),
             str(output_dir / 'ct_to_mri.mat'),
@@ -244,7 +245,7 @@ class IEEGRecon:
 
         # Convert transform to FSL format
         subprocess.run([
-            f"{self.itksnap}/c3d_affine_tool",
+            f"{self.c3d}/c3d_affine_tool",
             "-ref", self.preImplantMRI,
             "-src", self.postImplantCT,
             str(output_dir / 'ct_to_mri.mat'),
@@ -854,9 +855,6 @@ class IEEGRecon:
         
         # Save the plot as HTML for interactive viewing
         fig.write_html(str(output_dir / 'electrode_visualization.html'))
-
-        # Save as a static image at 300 DPI
-        fig.write_image(str(output_dir / 'electrode_visualization.png'), scale=3)
 
     def module4(self, skip_existing=False):
         """
