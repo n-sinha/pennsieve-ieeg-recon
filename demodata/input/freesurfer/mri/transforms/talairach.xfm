@@ -1,0 +1,10 @@
+MNI Transform File
+% % avi2talxfm
+% This file was created by tkregister2
+% Sun Aug 14 14:53:14 2022
+
+Transform_Type = Linear;
+Linear_Transform =
+1.107541e+00 1.592530e-01 9.471800e-02 6.213529e-01 
+-2.147730e-01 1.092773e+00 2.409350e-01 -2.111241e+01 
+-7.874100e-02 -2.420640e-01 1.202353e+00 -1.071457e+01 ;
