@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  
+  deface:
+    env_file:
+      - dev.env
+    image: nishant/ieeg_recon
+    volumes:
+      - ./data:/data
+    container_name: ieeg_recon
+    build:
+      context: .
+      dockerfile: ./Dockerfile
