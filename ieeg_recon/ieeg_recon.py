@@ -909,9 +909,14 @@ class IEEGRecon:
         brain_extracted_nii = output_dir / 'brain_extracted.nii.gz'
         mni152_template_nii = output_dir / 'mni152_template.nii.gz'
         
-        print("Converting .mgz files to .nii.gz format...")
-        subprocess.run(['mri_convert', str(brain_extracted_path), str(brain_extracted_nii)], check=True)
-        subprocess.run(['mri_convert', str(mni152_template), str(mni152_template_nii)], check=True)
+        print("Converting .mgz files to .nii.gz format using nibabel...")
+        # Load and save brain extracted image
+        brain_img = nib.load(str(brain_extracted_path))
+        nib.save(brain_img, str(brain_extracted_nii))
+        
+        # Load and save MNI152 template
+        mni152_img = nib.load(str(mni152_template))
+        nib.save(mni152_img, str(mni152_template_nii))
         
         # Step 2: ANTs registration to MNI space
         print("Step 2: ANTs registration to MNI space...")

@@ -1,5 +1,5 @@
 # Use a Python image with uv pre-installed
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim as builder
 
 # Install ANTs
 RUN apt-get update && \
@@ -8,15 +8,11 @@ RUN apt-get update && \
     unzip ants.zip && \
     rm ants.zip
 
-ENV PATH="/ants-2.6.2/bin:$PATH"
-
 # Install greedy in /itksnap/greedy
 RUN wget -O greedy.tar.gz https://sourceforge.net/projects/greedy-reg/files/Nightly/greedy-nightly-Linux-gcc64.tar.gz/download && \
     mkdir -p /itksnap/greedy && \
     tar -xzf greedy.tar.gz -C /itksnap/greedy --strip-components=1 && \
     rm greedy.tar.gz
-
-ENV PATH="/itksnap/greedy/bin:$PATH"
 
 # Install c3d tools in /itksnap/c3d
 RUN wget -O /tmp/c3d.tar.gz http://downloads.sourceforge.net/project/c3d/c3d/Nightly/c3d-nightly-Linux-gcc64.tar.gz && \
@@ -24,13 +20,10 @@ RUN wget -O /tmp/c3d.tar.gz http://downloads.sourceforge.net/project/c3d/c3d/Nig
     tar -xzf /tmp/c3d.tar.gz -C /itksnap/c3d --strip-components=1 && \
     rm /tmp/c3d.tar.gz
 
-ENV PATH="/itksnap/c3d/bin:$PATH"
-
 # Install Conda from Miniforge
 RUN wget -O /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh && \
     bash /tmp/miniforge.sh -b -p /opt/conda && \
     rm /tmp/miniforge.sh
-ENV PATH="/opt/conda/bin:$PATH"
 
 # Install FSL
 ENV FSL_CONDA_CHANNEL="https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/public"
@@ -41,8 +34,22 @@ RUN /opt/conda/bin/conda install -n base -y -c $FSL_CONDA_CHANNEL -c conda-forge
     fsl-flirt && \
     /opt/conda/bin/conda clean -afy
 
-ENV FSLDIR="/opt/conda"
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim as runner
 
+COPY --from=builder /ants-2.6.2/bin/antsRegistration /ants-2.6.2/bin/antsRegistration
+COPY --from=builder /ants-2.6.2/bin/antsApplyTransforms /ants-2.6.2/bin/antsApplyTransforms
+COPY --from=builder /itksnap/greedy /itksnap/greedy
+COPY --from=builder /itksnap/c3d /itksnap/c3d
+COPY --from=builder /opt/conda/bin/fslmaths /opt/conda/bin/fslmaths
+COPY --from=builder /opt/conda/bin/flirt /opt/conda/bin/flirt
+COPY --from=builder /opt/conda/bin/img2imgcoord /opt/conda/bin/img2imgcoord
+
+ENV PATH="/ants-2.6.2/bin:$PATH"
+ENV PATH="/itksnap/greedy/bin:$PATH"
+ENV PATH="/itksnap/c3d/bin:$PATH"
+ENV PATH="/opt/conda/bin:$PATH"
+ENV FSLDIR="/opt/conda"
+    
 # Install the project into `/app`
 WORKDIR /app
 
@@ -71,4 +78,3 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/app/.venv/bin:$PATH"
 
 CMD ["uv", "run", "run_ieeg_recon.py", "-h"]
-
