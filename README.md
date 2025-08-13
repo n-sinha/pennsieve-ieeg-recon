@@ -1,4 +1,4 @@
-# pennsieve-ieeg-recon application
+# pennsieve-ieeg-recon
 
 This application performs iEEG reconstruction using pre-implant MRI, post-implant CT, and electrode coordinates.
 
@@ -10,6 +10,14 @@ The application uses two key environment variables:
 
 ## Usage Examples
 
+### Pull the Container
+
+First, pull the container from Docker Hub:
+
+```bash
+docker pull nishantsinha89/ieeg_recon:latest
+```
+
 ### Basic Usage (Using Environment Variables)
 
 Mount your data directories and run with default file names:
@@ -17,7 +25,7 @@ Mount your data directories and run with default file names:
 ```bash
 docker run -v "/path/to/your/data:/data" \
   -v "/path/to/your/output:/output" \
-  nishant/ieeg_recon \
+  nishantsinha89/ieeg_recon:latest \
   --modules "1,2,3,4" \
   --qa-viewer niplot \
   --reg-type gc_noCTthereshold
@@ -38,7 +46,7 @@ Specify custom file paths while still using environment variables:
 ```bash
 docker run -v "/Users/nishant/Dropbox/Sinha/Lab/Research/epi_t3_iEEG/data:/data" \
   -v "/Users/nishant/Dropbox/Sinha/Lab/Research/pennsieve-applications/pennsieve-ieeg-recon/data:/output" \
-  nishant/ieeg_recon \
+  nishantsinha89/ieeg_recon:latest \
   --t1 "/data/BIDS/sub-RID0031/derivatives/freesurfer/mri/T1.nii.gz" \
   --ct "/data/BIDS/sub-RID0031/ses-clinical01/ct/sub-RID0031_ses-clinical01_acq-3D_space-T01ct_ct.nii.gz" \
   --elec "/data/BIDS/sub-RID0031/ses-clinical01/ieeg/sub-RID0031_ses-clinical01_space-T01ct_desc-vox_electrodes.txt" \
@@ -57,7 +65,7 @@ Run with minimal arguments, letting the app use environment variable defaults:
 ```bash
 docker run -v "/your/data:/data" \
   -v "/your/output:/output" \
-  nishant/ieeg_recon \
+  nishantsinha89/ieeg_recon:latest \
   --modules "1,2,3,4"
 ```
 
@@ -69,7 +77,7 @@ Run the container interactively to explore and debug:
 docker run -it --entrypoint bash \
   -v "/your/data:/data" \
   -v "/your/output:/output" \
-  nishant/ieeg_recon
+  nishantsinha89/ieeg_recon:latest
 ```
 
 ## File Naming Conventions

@@ -4,7 +4,7 @@ services:
   ieeg_recon:
     env_file:
       - dev.env
-    image: nishant/ieeg_recon
+    image: nishantsinha89/ieeg_recon:latest
     volumes:
       - ./data:/data
     container_name: ieeg_recon
