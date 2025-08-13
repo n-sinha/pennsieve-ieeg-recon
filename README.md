@@ -5,8 +5,8 @@ This application performs iEEG reconstruction using pre-implant MRI, post-implan
 ## Environment Variables
 
 The application uses two key environment variables:
-- `INPUT_DIR`: Directory containing input files (default: `/data`)
-- `OUTPUT_DIR`: Directory for output files (default: `/output`)
+- `INPUT_DIR`: Directory containing input files (default: `/data/input`)
+- `OUTPUT_DIR`: Directory for output files (default: `/data/output`)
 
 ## Usage Examples
 
@@ -23,21 +23,21 @@ docker pull nishantsinha89/ieeg_recon:latest
 Mount your data directories and run with default file names:
 
 ```bash
-docker run -v "/path/to/your/data:/data" \
-  -v "/path/to/your/output:/output" \
+docker run -v "/path/to/your/data:/data/input" \
+  -v "/path/to/your/output:/data/output" \
   nishantsinha89/ieeg_recon:latest \
-  --t1 "/data/T1.nii.gz" \
-  --ct "/data/CT.nii.gz" \
-  --elec "/data/electrodes.txt" \
-  --output-dir "/output" \
+  --t1 "/data/input/T1.nii.gz" \
+  --ct "/data/input/CT.nii.gz" \
+  --elec "/data/input/electrodes.txt" \
+  --output-dir "/data/output" \
   --modules "1,2,3,4" \
   --qa-viewer niplot \
   --reg-type gc_noCTthereshold
 ```
 
-**Expected file structure in INPUT_DIR (`/data`):**
+**Expected file structure in INPUT_DIR (`/data/input`):**
 ```
-/data/
+/data/input/
 ├── T1.nii.gz                    # Pre-implant MRI
 ├── CT.nii.gz                    # Post-implant CT  
 └── electrodes.txt               # Electrode coordinates
@@ -48,14 +48,14 @@ docker run -v "/path/to/your/data:/data" \
 Run with the included demo data for testing and learning:
 
 ```bash
-docker run -v "$(pwd)/demodata/input:/data" \
-  -v "$(pwd)/demodata/output:/output" \
+docker run -v "$(pwd)/demodata/input:/data/input" \
+  -v "$(pwd)/demodata/output:/data/output" \
   nishantsinha89/ieeg_recon:latest \
-  --t1 "/data/T1.nii.gz" \
-  --ct "/data/CT.nii.gz" \
-  --elec "/data/electrodes.txt" \
-  --freesurfer-dir "/data/freesurfer" \
-  --output-dir "/output" \
+  --t1 "/data/input/T1.nii.gz" \
+  --ct "/data/input/CT.nii.gz" \
+  --elec "/data/input/electrodes.txt" \
+  --freesurfer-dir "/data/input/freesurfer" \
+  --output-dir "/data/output" \
   --skip-existing \
   --modules "1,2,3,4" \
   --qa-viewer niplot \
@@ -76,13 +76,13 @@ demodata/input/
 Run with only the required arguments:
 
 ```bash
-docker run -v "/your/data:/data" \
-  -v "/your/output:/output" \
+docker run -v "/your/data:/data/input" \
+  -v "/your/output:/data/output" \
   nishantsinha89/ieeg_recon:latest \
-  --t1 "/data/T1.nii.gz" \
-  --ct "/data/CT.nii.gz" \
-  --elec "/data/electrodes.txt" \
-  --output-dir "/output" \
+  --t1 "/data/input/T1.nii.gz" \
+  --ct "/data/input/CT.nii.gz" \
+  --elec "/data/input/electrodes.txt" \
+  --output-dir "/data/output" \
   --modules "1,2,3,4"
 ```
 
@@ -92,8 +92,8 @@ Run the container interactively to explore and debug:
 
 ```bash
 docker run -it --entrypoint bash \
-  -v "/your/data:/data" \
-  -v "/your/output:/output" \
+  -v "/your/data:/data/input" \
+  -v "/your/output:/data/output" \
   nishantsinha89/ieeg_recon:latest
 ```
 

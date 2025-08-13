@@ -41,6 +41,7 @@ octave-workspace
 _build/
 # *.pkl
 data/
+demodata/output/
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
